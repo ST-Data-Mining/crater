@@ -1,0 +1,13 @@
+The filenames that contain tp are the true positive craters. Also known
+as the ground truth.
+
+The filenames that contain tn are crater candidates created by
+Lourenco's highlight/shadow method but are not craters.
+
+Each file has the columns x,y,r where:
+
+x center of crater measured from the left side of image
+y center of crater measured from the top of image
+r radius of crater
+
+These will map to the images when they are 1700x1700 pixels.
