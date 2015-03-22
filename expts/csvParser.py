@@ -2,7 +2,6 @@ from __future__ import division,print_function
 import sys
 sys.dont_write_bytecode = True
 sys.path.append('..')
-import csv
 from lib import *
 import config 
 
@@ -28,7 +27,7 @@ def readcsv(fileName, base="/home/george/Panzer/NCSU/Spatial and Temporal/crater
 #readcsv('all.csv')
 
 def parseCSV(fileName):
-  pos=0;neg=0;
+  pos=0;neg=0
   points = []
   with open(fileName, 'rb') as csvfile:
     line = csvfile.readline()
