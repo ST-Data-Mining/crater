@@ -3,7 +3,13 @@ import sys
 sys.dont_write_bytecode = True
 sys.path.append('..')
 from lib import *
-import config 
+import config
+import random
+
+'''
+In the csv files craters are represented as '0'
+and non craters are represented as '1'
+'''
 
 def writecsv():
   f = open('/home/george/Panzer/NCSU/Spatial and Temporal/crater/data/features/all.csv','r+')
@@ -26,7 +32,7 @@ def readcsv(fileName, base="/home/george/Panzer/NCSU/Spatial and Temporal/crater
 
 #readcsv('all.csv')
 
-def parseCSV(fileName):
+def parseCSV(fileName, update_weight=True):
   pos=0;neg=0
   points = []
   with open(fileName, 'rb') as csvfile:
@@ -38,8 +44,27 @@ def parseCSV(fileName):
       else:
         neg += 1
       points.append(Point(datarow))
-  [point.updateWeight(pos, neg) for point in points]
+  if update_weight:
+    [point.updateWeight(pos, neg) for point in points]
   return points
+
+
+def randomPoints(fileName=config.ALL_FILE, craters=100, non_craters=100):
+  points = parseCSV(config.ALL_FILE, False)
+  random.seed(1)
+  randPoints = []
+  c, nc = 0,0
+  while c<craters or nc<non_craters:
+    point = random.choice(points)
+    if point in randPoints: continue
+    if (point.y == 0 and c==craters) or (point.y==1 and nc== non_craters):
+      continue
+    if point.y==0: c+=1
+    else: nc+=1
+    randPoints.append(point)
+  [point.updateWeight(non_craters, craters) for point in randPoints]
+  return randPoints
+
 
 if __name__=="__main__":
   parseCSV(config.TRAIN_FILE)

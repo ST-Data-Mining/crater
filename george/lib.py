@@ -71,8 +71,8 @@ class StrongClassifier:
       rep += i.weaks[t].__repr__()
       rep += "\n\n"
     return rep
-  def predict(i, inp):
-    LHS = sum([i.alphas[t] * i.weaks[t].predict(inp) for t in range(0,i.T)])
+  def predict(i, inp, start=0):
+    LHS = sum([i.alphas[t] * i.weaks[t].predict(inp) for t in range(start,i.T)])
     RHS = i.mu * sum(i.alphas)
     if LHS > RHS:
       return  1
@@ -83,19 +83,19 @@ class ABCD:
     i.TP, i.FP, i.FN, i.TN = 0, 0, 0, 0
   def __repr__(i):
     rep = "**** Statistics ****\n"
-    rep += "True  Non-Crater : " + str(i.TP) + "\n"
-    rep += "False Non-Crater : " + str(i.FP) + "\n"
-    rep += "False Crater     : " + str(i.FN) + "\n"
-    rep += "True  Crater     : " + str(i.TN) + "\n"
+    rep += "True  Crater     : " + str(i.TP) + "\n"
+    rep += "False Crater     : " + str(i.FP) + "\n"
+    rep += "False Non-Crater : " + str(i.FN) + "\n"
+    rep += "True  Non-Crater : " + str(i.TN) + "\n"
     return rep
   def update(i, pred, act):
-    if pred == 1 and act == 1:
+    if pred == 0 and act == 0:
       i.TP += 1
-    elif pred == 1 and act == 0:
-      i.FP += 1
     elif pred == 0 and act == 1:
+      i.FP += 1
+    elif pred == 1 and act == 0:
       i.FN += 1
-    elif pred == 0 and act == 0:
+    elif pred == 1 and act == 1:
       i.TN += 1
 
 def say(*lst): 
