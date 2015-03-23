@@ -56,3 +56,5 @@ target/
 
 #Local Stuff
 config.py
+george/err/*
+george/out/*

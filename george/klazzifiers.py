@@ -174,11 +174,11 @@ def _transfer(fname, T=150):
     print('\n'+region)
     print(stat)
 
-def _runner():
+def _runner(T=150):
   train = config.TRAIN_FILE
-  _booster(train)
-  _greedy(train)
-  _transfer(train)
+  _booster(train,T)
+  _greedy(train,T)
+  _transfer(train,T)
 
 
 if __name__=="__main__":
