@@ -2,6 +2,7 @@ from __future__ import division,print_function
 import sys
 sys.dont_write_bytecode = True
 from sklearn.linear_model import LinearRegression
+import math
 
 class o():
   def __init__(i,**fields):
@@ -58,8 +59,10 @@ class WeakClassifier:
     return "Single Node Decision Tree" + "\n\t Index = " + str(i.index) + "\n\t Training Error = " + str(i.trainError())
   
 class StrongClassifier:
-  def __init__(i, mu, T, weaks=[], alphas=[]):
-    i.mu, i.T, i.weaks, i.alphas = mu, T, weaks, alphas
+  def __init__(i, mu, T, weaks=None, alphas=None):
+    i.mu, i.T = mu, T
+    i.weaks = [] if not weaks else weaks
+    i.alphas = [] if not alphas else alphas
   def update(i, weak, alpha):
     i.weaks.append(weak)
     i.alphas.append(alpha)
@@ -71,8 +74,9 @@ class StrongClassifier:
       rep += i.weaks[t].__repr__()
       rep += "\n\n"
     return rep
-  def predict(i, inp, start=0):
-    LHS = sum([i.alphas[t] * i.weaks[t].predict(inp) for t in range(start,i.T)])
+  def predict(i, inp, upper=False):
+    start = math.ceil(i.T/2) if upper else 0
+    LHS = sum([i.alphas[t] * i.weaks[t].predict(inp) for t in range(int(start),i.T)])
     RHS = i.mu * sum(i.alphas)
     if LHS > RHS:
       return  1
@@ -82,11 +86,14 @@ class ABCD:
   def __init__(i):
     i.TP, i.FP, i.FN, i.TN = 0, 0, 0, 0
   def __repr__(i):
-    rep = "**** Statistics ****\n"
+    rep = "\n**** Statistics ****\n"
     rep += "True  Crater     : " + str(i.TP) + "\n"
     rep += "False Crater     : " + str(i.FP) + "\n"
     rep += "False Non-Crater : " + str(i.FN) + "\n"
     rep += "True  Non-Crater : " + str(i.TN) + "\n"
+    rep += "Precision        : " + str(i.precision()) + "\n"
+    rep += "Recall           : " + str(i.recall()) + "\n"
+    rep += "F1               : " + str(i.f1()) + "\n"
     return rep
   def update(i, pred, act):
     if pred == 0 and act == 0:
@@ -97,6 +104,12 @@ class ABCD:
       i.FN += 1
     elif pred == 1 and act == 1:
       i.TN += 1
+  def precision(i):
+    return i.TP/(i.TP + i.FP+0.000000001)
+  def recall(i):
+    return i.TP/(i.TP + i.FN+0.000000001)
+  def f1(i):
+    return 2/(1/i.precision() + 1/i.recall())
 
 def say(*lst): 
   print(*lst,end="")

@@ -21,14 +21,15 @@ def readcsv(fileName, base="/home/george/Panzer/NCSU/Spatial and Temporal/crater
   with open(base+fileName,'rb') as csvfile:
     line = csvfile.readline()
     i=0
-    if cnt == 0 and toWrite != None:
+    if cnt == 0 and not toWrite:
       toWrite.write(line)
       i+=1
     for line in csvfile.readlines():
-      if toWrite != None:
+      if not toWrite:
         toWrite.write(line)
       i+=1
     print(i)
+  csvfile.close()
 
 #readcsv('all.csv')
 
@@ -36,7 +37,7 @@ def parseCSV(fileName, update_weight=True):
   pos=0;neg=0
   points = []
   with open(fileName, 'rb') as csvfile:
-    line = csvfile.readline()
+    csvfile.readline()
     for line in csvfile.readlines():
       datarow =  map(float, line.split(','))
       if datarow[-1] == 1:

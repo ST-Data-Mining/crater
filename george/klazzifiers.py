@@ -18,8 +18,9 @@ def normalize_points(points):
   for point in points:
     point.w = point.w/tot
   
-def best_weak_classifier(points, attrLen, ignores=[]):
+def best_weak_classifier(points, attrLen, ignores=None):
   best_c = None
+  if not ignores: ignores = []
   for i in range(0,attrLen):
     if i in ignores:
       continue
@@ -41,7 +42,7 @@ def booster(fname, mu=0.525, T=150):
   strong = StrongClassifier(mu, T)
   ignores = []
   for t in range(0,T):
-    say(t, ' ')
+    say(t+1, ' ')
     normalize_points(points)
     weak_classifier = best_weak_classifier(points, len(points[0].x), ignores)
     ignores.append(weak_classifier.index)
@@ -57,16 +58,22 @@ def booster(fname, mu=0.525, T=150):
   return strong
 
 
-def _booster(fname):
-  print("***Boosting Classifier***")
-  points = parseCSV(fname)
-  strong = booster(fname, T=5)
-  stat = ABCD()
-  for point in points:
-    pred = strong.predict(point.x)
-    act = int(point.y)
-    stat.update(pred, act)
-  print(stat)
+def _booster(fname, T=150):
+  print('***BOOSTER CLASSIFIER***')
+  boost_classifier = booster(fname, T=T)
+  #print(boost_classifier)
+  for region,test_files in [('west',['1_24.csv','1_25.csv']), ('center',['2_24.csv','2_25.csv']),
+                            ('east',['3_24.csv','3_25.csv'])]:
+    points = parseCSV(config.FEATURES_FOLDER+test_files[0], False)
+    points += parseCSV(config.FEATURES_FOLDER+test_files[1], False)
+
+    stat = ABCD()
+    for point in points:
+      pred = boost_classifier.predict(point.x)
+      act = int(point.y)
+      stat.update(pred, act)
+    print('\n'+region)
+    print(stat)
 
 
 def greedy(fname, mu=0.675, T=150):
@@ -75,7 +82,7 @@ def greedy(fname, mu=0.675, T=150):
   ignores = []
   normalize_points(points)
   for t in range(0, T):
-    say(t,' ')
+    say(t+1,' ')
     weak_classifier = best_weak_classifier(points, len(points[0].x), ignores)
     ignores.append(weak_classifier.index)
     error = weak_classifier.trainError()
@@ -89,16 +96,22 @@ def greedy(fname, mu=0.675, T=150):
   return strong
 
 
-def _greedy(fname):
+def _greedy(fname, T=150):
   print('***GREEDY CLASSIFIER***')
-  points = parseCSV(fname)
-  strong = greedy(fname, T=5)
-  stat = ABCD()
-  for point in points:
-    pred = strong.predict(point.x)
-    act = int(point.y)
-    stat.update(pred, act)
-  print(stat)
+  greedy_classifier = greedy(fname, T=T)
+  #print(greedy_classifier)
+  for region,test_files in [('west',['1_24.csv','1_25.csv']), ('center',['2_24.csv','2_25.csv']),
+                            ('east',['3_24.csv','3_25.csv'])]:
+    points = parseCSV(config.FEATURES_FOLDER+test_files[0], False)
+    points += parseCSV(config.FEATURES_FOLDER+test_files[1], False)
+
+    stat = ABCD()
+    for point in points:
+      pred = greedy_classifier.predict(point.x)
+      act = int(point.y)
+      stat.update(pred, act)
+    print('\n'+region)
+    print(stat)
 
 
 def transfer(fname, mu=0.5, T=150):
@@ -127,7 +140,7 @@ def transfer(fname, mu=0.5, T=150):
   strong = StrongClassifier(mu, T)
   ignores=[]
   for t in range(0,T):
-    say(t,' ')
+    say(t+1,' ')
     normalize_points(total)
     weak_classifier = best_weak_classifier(total[len(diff):], len(total[0].x), ignores)
     ignores.append(weak_classifier.index)
@@ -144,18 +157,29 @@ def transfer(fname, mu=0.5, T=150):
   return strong
 
 
-def _transfer(fname):
-  print('***TL CLASSIFIER***')
-  points = parseCSV(fname)
-  strong = transfer(fname, T=5)
-  stat = ABCD()
-  for point in points:
-    pred = strong.predict(point.x)
-    act = int(point.y)
-    stat.update(pred, act)
-  print(stat)
+def _transfer(fname, T=150):
+  print('***TRANSFER CLASSIFIER***')
+  tl_classifier = transfer(fname, T=T)
+  #print(tl_classifier)
+  for region,test_files in [('west',['1_24.csv','1_25.csv']), ('center',['2_24.csv','2_25.csv']),
+                            ('east',['3_24.csv','3_25.csv'])]:
+    points = parseCSV(config.FEATURES_FOLDER+test_files[0], True)
+    points += parseCSV(config.FEATURES_FOLDER+test_files[1], True)
+
+    stat = ABCD()
+    for point in points:
+      pred = tl_classifier.predict(point.x, False)
+      act = int(point.y)
+      stat.update(pred, act)
+    print('\n'+region)
+    print(stat)
+
+def _runner():
+  train = config.TRAIN_FILE
+  _booster(train)
+  _greedy(train)
+  _transfer(train)
+
 
 if __name__=="__main__":
-  #_greedy(config.TRAIN_FILE)
-  #_booster(config.TRAIN_FILE)
-  _transfer(config.TRAIN_FILE)
+  _runner()

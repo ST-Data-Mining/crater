@@ -1,0 +1,114 @@
+***BOOSTER CLASSIFIER***
+1  2  3  4  5  6  
+
+west
+
+**** Statistics ****
+True  Crater     : 1896
+False Crater     : 279
+False Non-Crater : 779
+True  Non-Crater : 2007
+Precision        : 0.871724137931
+Recall           : 0.708785046729
+F1               : 0.781855670103
+
+
+center
+
+**** Statistics ****
+True  Crater     : 391
+False Crater     : 110
+False Non-Crater : 52
+True  Non-Crater : 628
+Precision        : 0.780439121755
+Recall           : 0.882618510156
+F1               : 0.828389830507
+
+
+east
+
+**** Statistics ****
+True  Crater     : 406
+False Crater     : 86
+False Non-Crater : 52
+True  Non-Crater : 679
+Precision        : 0.825203252031
+Recall           : 0.886462882094
+F1               : 0.854736842103
+
+***GREEDY CLASSIFIER***
+1  2  3  4  5  6  
+
+west
+
+**** Statistics ****
+True  Crater     : 2675
+False Crater     : 2286
+False Non-Crater : 0
+True  Non-Crater : 0
+Precision        : 0.539205805281
+Recall           : 1.0
+F1               : 0.700628601362
+
+
+center
+
+**** Statistics ****
+True  Crater     : 443
+False Crater     : 738
+False Non-Crater : 0
+True  Non-Crater : 0
+Precision        : 0.375105842506
+Recall           : 0.999999999998
+F1               : 0.545566502462
+
+
+east
+
+**** Statistics ****
+True  Crater     : 458
+False Crater     : 765
+False Non-Crater : 0
+True  Non-Crater : 0
+Precision        : 0.37448896157
+Recall           : 0.999999999998
+F1               : 0.54491374182
+
+***TRANSFER CLASSIFIER***
+1  2  3  4  5  6  
+
+west
+
+**** Statistics ****
+True  Crater     : 2675
+False Crater     : 2286
+False Non-Crater : 0
+True  Non-Crater : 0
+Precision        : 0.539205805281
+Recall           : 1.0
+F1               : 0.700628601362
+
+
+center
+
+**** Statistics ****
+True  Crater     : 443
+False Crater     : 738
+False Non-Crater : 0
+True  Non-Crater : 0
+Precision        : 0.375105842506
+Recall           : 0.999999999998
+F1               : 0.545566502462
+
+
+east
+
+**** Statistics ****
+True  Crater     : 458
+False Crater     : 765
+False Non-Crater : 0
+True  Non-Crater : 0
+Precision        : 0.37448896157
+Recall           : 0.999999999998
+F1               : 0.54491374182
+
