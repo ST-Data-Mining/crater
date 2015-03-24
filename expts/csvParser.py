@@ -50,8 +50,11 @@ def parseCSV(fileName, update_weight=True):
   return points
 
 
-def randomPoints(fileName=config.ALL_FILE, craters=100, non_craters=100):
-  points = parseCSV(config.ALL_FILE, False)
+def randomPoints(fileNames=None, craters=100, non_craters=100):
+  points = []
+  if not fileNames: fileNames=[config.ALL_FILE]
+  for fileName in fileNames:
+    points += parseCSV(config.FEATURES_FOLDER+fileName, False)
   random.seed(1)
   randPoints = []
   c, nc = 0,0

@@ -48,9 +48,9 @@ class WeakClassifier:
     if not i._classifier:
       i._classifier = LinearRegression()
       i._classifier.fit(i.x, i.y)
-  def trainError(i):
+  def trainError(i, start=0):
     if not i.error:
-      i.error = sum([i.w[j]*abs(i.predict(i.x[j])- i.y[j]) for j in range(0,i.size)])
+      i.error = sum([i.w[j]*abs(i.predict(i.x[j])- i.y[j]) for j in range(start, i.size)])
     return i.error
   def predict(i, inp):
     attr = inp if (len(inp) == 1) else [inp[i.index]]

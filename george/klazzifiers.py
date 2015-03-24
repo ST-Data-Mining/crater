@@ -5,9 +5,8 @@ HOME=environ['HOME']
 PROJECT_ROOT=HOME+'/Panzer/NCSU/Spatial and Temporal/crater'
 EXPTS = PROJECT_ROOT+'/expts'
 sys.path.extend([PROJECT_ROOT,EXPTS])
-import math
 sys.dont_write_bytecode = True
-from lib import *
+from george.lib import *
 from expts.csvParser import parseCSV, randomPoints
 import config
 
@@ -18,14 +17,14 @@ def normalize_points(points):
   for point in points:
     point.w = point.w/tot
   
-def best_weak_classifier(points, attrLen, ignores=None):
+def best_weak_classifier(points, attrLen, ignores=None, start=0):
   best_c = None
   if not ignores: ignores = []
   for i in range(0,attrLen):
     if i in ignores:
       continue
     classifier = WeakClassifier(points, i)
-    if (not best_c) or (classifier.trainError() < best_c.trainError()):
+    if (not best_c) or (classifier.trainError(start) < best_c.trainError(start)):
       best_c = classifier
   return best_c
 
@@ -116,7 +115,7 @@ def _greedy(fname, T=150):
     print(stat)
 
 
-def transfer(fname, mu=0.5, T=150):
+def transfer(fname, sameFiles, mu=0.5, T=150):
   def craterCount(points):
     count=0
     for point in points:
@@ -134,7 +133,7 @@ def transfer(fname, mu=0.5, T=150):
         point.w *= b_t**-e
 
   diff = parseCSV(fname)
-  same = randomPoints(craters=102, non_craters=153)
+  same = randomPoints(sameFiles, craters=102, non_craters=153)
   total = diff+same
   craters = craterCount(total)
   non_craters = len(total) - craters
@@ -144,7 +143,7 @@ def transfer(fname, mu=0.5, T=150):
   for t in range(0,T):
     say(t+1,' ')
     normalize_points(total)
-    weak_classifier = best_weak_classifier(total[len(diff):], len(total[0].x), ignores)
+    weak_classifier = best_weak_classifier(total, len(total[0].x), ignores, len(diff))
     ignores.append(weak_classifier.index)
     error = weak_classifier.trainError()
     if error == 0:
@@ -161,10 +160,11 @@ def transfer(fname, mu=0.5, T=150):
 
 def _transfer(fname, T=150):
   print('***TRANSFER CLASSIFIER***')
-  tl_classifier = transfer(fname, T=T)
+
   #print(tl_classifier)
   for region,test_files in [('west',['1_24.csv','1_25.csv']), ('center',['2_24.csv','2_25.csv']),
                             ('east',['3_24.csv','3_25.csv']), ('all',['all.csv']) ]:
+    tl_classifier = transfer(fname, test_files, T=T)
     points = parseCSV(config.FEATURES_FOLDER+test_files[0], True)
     if  len(test_files) > 1:
       points += parseCSV(config.FEATURES_FOLDER+test_files[1], True)
@@ -177,7 +177,7 @@ def _transfer(fname, T=150):
     print('\n'+region)
     print(stat)
 
-def _runner(T=50):
+def _runner(T=75):
   train = config.TRAIN_FILE
   _booster(train,T)
   _greedy(train,T)
