@@ -104,7 +104,7 @@ def _greedy(fname, T=150):
   for region,test_files in [('west',['1_24.csv','1_25.csv']), ('center',['2_24.csv','2_25.csv']),
                             ('east',['3_24.csv','3_25.csv']), ('all',['all.csv']) ]:
     points = parseCSV(config.FEATURES_FOLDER+test_files[0], False)
-    if len(test_files > 1):
+    if len(test_files) > 1:
       points += parseCSV(config.FEATURES_FOLDER+test_files[1], False)
 
     stat = ABCD()
@@ -166,7 +166,7 @@ def _transfer(fname, T=150):
   for region,test_files in [('west',['1_24.csv','1_25.csv']), ('center',['2_24.csv','2_25.csv']),
                             ('east',['3_24.csv','3_25.csv']), ('all',['all.csv']) ]:
     points = parseCSV(config.FEATURES_FOLDER+test_files[0], True)
-    if  len(test_files)>1:
+    if  len(test_files) > 1:
       points += parseCSV(config.FEATURES_FOLDER+test_files[1], True)
 
     stat = ABCD()
@@ -177,7 +177,7 @@ def _transfer(fname, T=150):
     print('\n'+region)
     print(stat)
 
-def _runner(T=2):
+def _runner(T=50):
   train = config.TRAIN_FILE
   _booster(train,T)
   _greedy(train,T)
