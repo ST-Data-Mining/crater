@@ -1,7 +1,7 @@
 from __future__ import division,print_function
 import sys
 sys.dont_write_bytecode = True
-from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeClassifier
 import math
 
 class o():
@@ -17,7 +17,7 @@ class o():
   def __repr__(i):
     d = i.__dict__
     name = i.__class__.__name__
-    return name+'{'+' '.join([':%s %s' % (k, pretty(d[k]))
+    return name+'{'+' '.join([':%s %s' % (k,d[k])
                               for k in i.show()]) + '}'
 
 class Point:
@@ -46,7 +46,7 @@ class WeakClassifier:
     i.train()
   def train(i):
     if not i._classifier:
-      i._classifier = LinearRegression()
+      i._classifier = DecisionTreeClassifier(max_depth=1, max_leaf_nodes=2)
       i._classifier.fit(i.x, i.y)
   def trainError(i, start=0):
     if not i.error:
@@ -77,8 +77,8 @@ class StrongClassifier:
   def predict(i, inp, upper=False):
     start = math.ceil(i.T/2) if upper else 0
     LHS = sum([i.alphas[t] * i.weaks[t].predict(inp) for t in range(int(start),i.T)])
-    RHS = i.mu * sum(i.alphas)
-    if LHS > RHS:
+    RHS = i.mu * sum(i.alphas[int(start):])
+    if LHS >= RHS:
       return  1
     return 0
 
