@@ -2,7 +2,7 @@ from __future__ import division,print_function
 import sys
 sys.dont_write_bytecode = True
 sys.path.append('..')
-from lib import *
+from george.lib import *
 import config
 import random
 
@@ -71,4 +71,7 @@ def randomPoints(fileNames=None, craters=100, non_craters=100):
 
 
 if __name__=="__main__":
-  parseCSV(config.TRAIN_FILE)
+  pts = parseCSV(config.TRAIN_FILE)
+  cl =  WeakClassifier(pts, 45)
+  for pt in pts:
+    print(cl.predict(pt.x),pt.y)

@@ -132,7 +132,7 @@ def transfer(fname, sameFiles, mu=0.5, T=150):
       else:
         point.w *= b_t**-e
 
-  diff = parseCSV(fname)
+  diff = parseCSV(fname, False)
   same = randomPoints(sameFiles, craters=102, non_craters=153)
   total = diff+same
   craters = craterCount(total)
@@ -145,7 +145,7 @@ def transfer(fname, sameFiles, mu=0.5, T=150):
     normalize_points(total)
     weak_classifier = best_weak_classifier(total, len(total[0].x), ignores, len(diff))
     ignores.append(weak_classifier.index)
-    error = weak_classifier.trainError()
+    error = weak_classifier.trainError(start=len(diff))
     if error == 0:
       strong.T = t
       break
@@ -171,13 +171,13 @@ def _transfer(fname, T=150):
 
     stat = ABCD()
     for point in points:
-      pred = tl_classifier.predict(point.x, False)
+      pred = tl_classifier.predict(point.x, True)
       act = int(point.y)
       stat.update(pred, act)
     print('\n'+region)
     print(stat)
 
-def _runner(T=75):
+def _runner(T=150):
   train = config.TRAIN_FILE
   _booster(train,T)
   _greedy(train,T)
