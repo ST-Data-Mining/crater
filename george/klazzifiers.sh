@@ -1,2 +1,2 @@
 #! /bin/tcsh
-python klazzifiers.py > ./logs/klazzifiers.log
+python klazzifiers.py > ./logs/BOOSTER_AND_TL.log
