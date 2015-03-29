@@ -28,7 +28,7 @@ def best_weak_classifier(points, attrLen, ignores=None, start=0):
       best_c = classifier
   return best_c
 
-def booster(fname, mu=0.525, T=150):
+def booster(fname, mu=0.475, T=150):
 
   def updateWeights(classifier, b):
     for p in points:
@@ -51,7 +51,7 @@ def booster(fname, mu=0.525, T=150):
       strong.T = t
       break
     updateWeights(weak_classifier, beta)
-    alpha = math.log(1/beta, 2)
+    alpha = math.log(1/beta)
     strong.update(weak_classifier,alpha)
   print('')
   return strong
@@ -76,7 +76,7 @@ def _booster(fname, T=150):
     print(stat)
 
 
-def greedy(fname, mu=0.675, T=150):
+def greedy(fname, mu=0.325, T=150):
   points = parseCSV(fname)
   strong = StrongClassifier(mu, T)
   ignores = []
@@ -90,7 +90,7 @@ def greedy(fname, mu=0.675, T=150):
     if beta == 0:
       strong.T = t
       break
-    alpha = math.log(1/beta, 2)
+    alpha = math.log(1/beta)
     strong.update(weak_classifier,alpha)
   print('')
   return strong
@@ -171,7 +171,7 @@ def _transfer(fname, T=150):
 
     stat = ABCD()
     for point in points:
-      pred = tl_classifier.predict(point.x, True)
+      pred = tl_classifier.predict(point.x)
       act = int(point.y)
       stat.update(pred, act)
     print('\n'+region)
@@ -185,4 +185,4 @@ def _runner(T=150):
 
 
 if __name__=="__main__":
-  _runner()
+  _runner(150)

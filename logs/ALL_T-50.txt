@@ -1,0 +1,153 @@
+***BOOSTER CLASSIFIER***
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  
+
+west
+
+**** Statistics ****
+True  Crater     : 1766
+False Crater     : 232
+False Non-Crater : 909
+True  Non-Crater : 2054
+Precision        : 0.883883883883
+Recall           : 0.660186915888
+F1               : 0.755831371709
+
+
+center
+
+**** Statistics ****
+True  Crater     : 365
+False Crater     : 92
+False Non-Crater : 78
+True  Non-Crater : 646
+Precision        : 0.798687089714
+Recall           : 0.823927765235
+F1               : 0.811111111109
+
+
+east
+
+**** Statistics ****
+True  Crater     : 407
+False Crater     : 42
+False Non-Crater : 51
+True  Non-Crater : 723
+Precision        : 0.906458797325
+Recall           : 0.888646288208
+F1               : 0.897464167583
+
+
+all
+
+**** Statistics ****
+True  Crater     : 2538
+False Crater     : 366
+False Non-Crater : 1038
+True  Non-Crater : 3423
+Precision        : 0.873966942148
+Recall           : 0.709731543624
+F1               : 0.783333333333
+
+***GREEDY CLASSIFIER***
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  
+
+west
+
+**** Statistics ****
+True  Crater     : 1806
+False Crater     : 213
+False Non-Crater : 869
+True  Non-Crater : 2073
+Precision        : 0.894502228826
+Recall           : 0.675140186916
+F1               : 0.769492969748
+
+
+center
+
+**** Statistics ****
+True  Crater     : 395
+False Crater     : 92
+False Non-Crater : 48
+True  Non-Crater : 646
+Precision        : 0.811088295686
+Recall           : 0.891647855528
+F1               : 0.84946236559
+
+
+east
+
+**** Statistics ****
+True  Crater     : 390
+False Crater     : 67
+False Non-Crater : 68
+True  Non-Crater : 698
+Precision        : 0.8533916849
+Recall           : 0.851528384278
+F1               : 0.852459016392
+
+
+all
+
+**** Statistics ****
+True  Crater     : 2591
+False Crater     : 372
+False Non-Crater : 985
+True  Non-Crater : 3417
+Precision        : 0.874451569355
+Recall           : 0.724552572707
+F1               : 0.792475913748
+
+***TRANSFER CLASSIFIER***
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  
+
+west
+
+**** Statistics ****
+True  Crater     : 1901
+False Crater     : 438
+False Non-Crater : 774
+True  Non-Crater : 1848
+Precision        : 0.812740487387
+Recall           : 0.710654205607
+F1               : 0.75827682489
+
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  
+
+center
+
+**** Statistics ****
+True  Crater     : 376
+False Crater     : 89
+False Non-Crater : 67
+True  Non-Crater : 649
+Precision        : 0.808602150536
+Recall           : 0.848758465009
+F1               : 0.828193832597
+
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  
+
+east
+
+**** Statistics ****
+True  Crater     : 406
+False Crater     : 55
+False Non-Crater : 52
+True  Non-Crater : 710
+Precision        : 0.880694143165
+Recall           : 0.886462882094
+F1               : 0.883569096842
+
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  
+
+all
+
+**** Statistics ****
+True  Crater     : 2634
+False Crater     : 502
+False Non-Crater : 942
+True  Non-Crater : 3287
+Precision        : 0.839923469387
+Recall           : 0.736577181208
+F1               : 0.784862932062
+

@@ -46,7 +46,7 @@ class WeakClassifier:
     i.train()
   def train(i):
     if not i._classifier:
-      i._classifier = DecisionTreeClassifier(max_depth=1, max_leaf_nodes=2)
+      i._classifier = DecisionTreeClassifier(criterion="entropy", max_depth=1, min_samples_leaf=1)
       i._classifier.fit(i.x, i.y)
   def trainError(i, start=0):
     if not i.error:
