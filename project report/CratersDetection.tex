@@ -20,7 +20,7 @@
   Crater detection has been one fundamental task in planetary science, which has drawn great attention from fields of data mining and image processing. In this project,  typical spatial data mining algorithms for crater detection are discussed, implemented and analyzed. Based on the results of different algorithms, potential improvements are proposed.
 \end{abstract}
 \section{Introduction}
-Craters are key structures formed by the collisions of meteorioids, asteroid or comet with planetary surface. To investigate past and future geological informaiton, craters detection methods or tools with high precision are demanded. Manual inspection of images is one mainly used method. However, due to the increasing huge amount of craters needed to be identified in very high resolution planetary images, this widely used method seems out-dated but automatic detection is the only practical solution to such tasks. Several reasons \cite{kim2005automated} can explain this:
+Craters are key structures formed by the collisions of datameteorioids, asteroid or comet with planetary surface. To investigate past and future geological informaiton, craters detection methods or tools with high precision are demanded. Manual inspection of images is one mainly used method. However, due to the increasing huge amount of craters needed to be identified in very high resolution planetary images, this widely used method seems out-dated but automatic detection is the only practical solution to such tasks. Several reasons \cite{kim2005automated} can explain this:
 \begin{itemize}
  \item The lighting conditions result in different qualities of the images, which would affect the detecting accuracy.
  \item Some geographical features, like volcanos, have similar morphological characteristics as craters.
@@ -60,12 +60,12 @@ The Boost algorithm generates a sequence of weak classifers $h_t(f)$ and combine
 \begin{equation}
  H(\hat{x}) = \sum_{t=1}^{T}\alpha_th_t{f}
 \end{equation},
-where T is the number of iterations, $t = 1,...,T$, $\hat{x} = <f_1,...,f_N>$ is the feature vector that describes a crater candidate; $f \in {f_1,...,f_N}$ is the single feature used to construct a weak classifier $h_t(f)$ and $\alpha_t$ is the weight of hypothesis $h_t(f)$. The Boost algorithm iteratively selects one feature at a time and stops when reaching T iterations; each iteration the Boost algorithm will choose a best feature, which includes weak classifier learning , features selection and weight updating. More details are described in algorithm 1.
+where T is the number of iterations, $t = 1,...,T$, $\hat{x} = <f_1,...,f_N>$ is the feature vector that describes a crater candidate; $f \in {f_1,...,f_N}$ is the single feature used to construct a weak classifier $h_t(f)$ and $\alpha_t$ is the weight of hypothesis $h_t(f)$. The Boost algorithm iteratively selects one feature at a time and stops when reaching T iterations; each iteration the Boost algorithm will choose a best feature, which includes weak classifier learning , features selection and weight updating. More details are described in algorithm 1\cite{ding2011subkilometer}.
 
 
-The Naive algorithm is to reduce the time complexity required by Boost algorithm. This algorithm uses the same weak classifier learning step and selects the top T best features using the weighted error sum in the step of feature selection as a criterion without any further iterations on weight updating.
+The Naive algorithm \cite{ding2011subkilometer}is to reduce the time complexity required by Boost algorithm. This algorithm uses the same weak classifier learning step and selects the top T best features using the weighted error sum in the step of feature selection as a criterion without any further iterations on weight updating.
 
-The Transfer Learning algorithm has the same three steps as Boosting algorithm, but the weight updating step is different. In Boosting algorithm, both training and testing data sets are drawn independently and identically from an underlying distribution and it is not expected to perform well if the testing data has a different distribution from the training data. The method used here is to build the  strong classifier sequentially. Details are presented in {\it weight updating}step in Algorithm 3.
+The Transfer Learning algorithm has the same three steps as Boosting algorithm, but the weight updating step is different. In Boosting algorithm, both training and testing data sets are drawn independently and identically from an underlying distribution and it is not expected to perform well if the testing data has a different distribution from the training data. The method used here is to build the  strong classifier sequentially. Details are presented in {\it weight updating}step in Algorithm 3\cite{ding2011subkilometer}.
 
 \begin{figure}[!hb]
 \begin{center}
@@ -90,10 +90,11 @@ The Transfer Learning algorithm has the same three steps as Boosting algorithm, 
 \label{T150}
 \end{center}
 \end{figure*}
-\subsection{Dataset description}
-\section{Experimental results}
 
-The dataset used in this project is from the same source as \cite{ding2011subkilometer}, which is a portion of the Hight Resolution Stereo Camera nadir panchromatic image h0905. The selected image has the resolution of 12.5 meters/pixel and the size of 3,000 by 4,500 pixels. The image is divided into west region, central region and east region, which include $4961$,$1181$ and $1223$ crater candidates, respectively. For some unknown reason,this is different from the numbers in \cite{ding2011subkilometer} even though we got this data set from their website.
+\section{Experimental results}
+\subsection{Dataset description}
+
+The dataset used in this project is from the same source as \cite{ding2011subkilometer}, which is a portion of the Hight Resolution Stereo Camera nadir panchromatic image h0905. The selected image has the resolution of 12.5 meters/pixel and the size of 3,000 by 4,500 pixels. The image is divided into west region, central region and east region, which include $4961$,$1181$ and $1223$ crater candidates, respectively. For some unknown reason, these number are different from those in \cite{ding2011subkilometer} even though we got this data set from their website.
 \subsection{Analysis}
 The results  generated by our implementation is listed in Fig.\ref{T50} and Fig. \ref{T150}. We can see that the best precision is produced by the naive algorithm, the best recall is produced by the transfer learning algorithm and the best F1 score is predicted by the transfer learning algorithm. We can also see that the recall of the naive algorithm reduces when we increase the number of features but the transfer learning algorithm improves when we use more features. The results shown here are different from \cite{ding2011subkilometer} in terms of ranks of these three algorithms for different goals. One possible reason is that the dataset we used offered by Dr.Ding is different from the ones they used in the paper.
 
