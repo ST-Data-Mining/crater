@@ -105,9 +105,9 @@ class ABCD:
     elif pred == 1 and act == 1:
       i.TN += 1
   def precision(i):
-    return i.TP/(i.TP + i.FP+0.000000001)
+    return i.TP/(i.TP + i.FP+0.000000001)+0.000000001
   def recall(i):
-    return i.TP/(i.TP + i.FN+0.000000001)
+    return i.TP/(i.TP + i.FN+0.000000001)+0.000000001
   def f1(i):
     return 2/(1/i.precision() + 1/i.recall())
 
