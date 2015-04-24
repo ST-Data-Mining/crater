@@ -44,8 +44,24 @@ def read(files):
       map(lambda x:x.weights(Y,N),rows)
   return rows
 
+def changeHeader(f = "./data/features"):
+  all_files = [ (join(f,path)) for path in listdir(f) if isfile(join(f,path))]
+  for one in all_files:
+    content = None
+    with open(one,"r") as f:
+      pdb.set_trace()
+      content = f.readlines()
+      header = content[0].split(",")
+      newheader = []
+      for item in header[:-1]:
+        newheader +=["$"+item]
+      newheader += ["<"+header[-1]]
+      content[0] = ",".join(newheader)
 
-
+    for row in content:
+      with open(one+".csv","a") as f:
+        f.write(row)
+    # pdb.set_trace()
 
 
 
@@ -54,4 +70,4 @@ def read(files):
 
 
 if __name__ == "__main__":
-    read()
+    changeHeader()
