@@ -12,22 +12,28 @@ import config
 import svm
 import nn
 import random
+import klazzifiers
 
 
-def builder(fname=config.TRAIN_FILE):
+def builder(fname=config.TRAIN_FILE, test_files=None):
   models = dict()
   models["svm"] = svm.builder(fname, kernel="poly")
   models["nn"] = nn.builder(fname, hiddens=250)
+  models["greedy"] = klazzifiers.greedy(fname)
+  models["boost"] = klazzifiers.booster(fname)
+  models["transfer"] = klazzifiers.booster(fname, test_files)
   return models
 
 def predictor(models, points):
-  ones, zeros = 0,0
   results = []
   consolidated = []
   actuals = []
   predicts,actuals = svm.predictor(models["svm"], points)
   results.append(predicts)
   results.append(nn.predictor(models["nn"], points)[0])
+  results.append([models["greedy"].predict(point.x) for point in points])
+  results.append([models["booster"].predict(point.x) for point in points])
+  results.append([models["transfer"].predict(point.x) for point in points])
   for i in range(len(results[0])):
     ones, zeros = 0,0
     for j in range(len(results)):
@@ -44,9 +50,10 @@ def predictor(models, points):
   return consolidated, actuals
 
 def _runner():
-  points = parseCSV(config.FEATURES_FOLDER+"3_24.csv", False)
-  points += parseCSV(config.FEATURES_FOLDER+"3_25.csv", False)
-  classifier = builder(config.TRAIN_FILE)
+  test_files=['3_24.csv','3_25.csv']
+  points = parseCSV(config.FEATURES_FOLDER+test_files[0], False)
+  points += parseCSV(config.FEATURES_FOLDER+test_files[1], False)
+  classifier = builder(config.TRAIN_FILE, test_files)
   predicted, actual = predictor(classifier, points)
   stat = ABCD()
   for p,a in zip(predicted,actual):
