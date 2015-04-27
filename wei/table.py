@@ -1,8 +1,8 @@
 from __future__ import division
 from lib    import *
-# from demos  import *
+from demos  import *
 from counts import *
-# from fi     import *
+from fi     import *
 
 import sys
 sys.dont_write_bytecode = True
