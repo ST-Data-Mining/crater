@@ -105,7 +105,7 @@ def start(path="./data/features"):
     # The.option.threshold = 0.83
     # The.cart.max_depth = 1
     The.option.tuning = False
-    cart_predicttest(predict,"Tuned_Cart")
+    # cart_predicttest(predict,"Tuned_Cart")
     The.classifier.carttuned = False
 
 
@@ -153,31 +153,40 @@ def start(path="./data/features"):
   createfile(objectives[The.option.tunedobjective])
   data = [join(path, f)
           for f in listdir(path) if isfile(join(path, f))]
-  pdb.set_trace()
-  for i in range(len(data)):
+  ### tuning for cart
+  The.data.predict = data[-1] # tuning data set
+  The.data.train = data[-2] # training data set
+  cart_tunetest(The.data.predict)
+  for i in range(len(data)-2):
     The.option.actualpredicted = "result_"+data[i][data[i].find("/",10,-1)+1:]
-    pdb.set_trace()
+    # pdb.set_trace()
+    print The.option.actualpredicted
     random.seed(1)
     pd, pf, prec,F, g = {},{},{},{},{}
     lst = [pd,pf,prec,F,g]
     try:
       predict = data[i]
-      train = [data[4]] # training data set 3_24.csv
+      # train = [data[-2]] # training data set 3_24.csv
     except IndexError, e:
       print " done!"
       break
     The.data.predict = predict
-    The.data.train = train
+    # The.data.train = train
+    print "train data: "+ The.data.train
+    print "test data: "+predict
     The.option.baseLine = False
     writefile(objectives[The.option.tunedobjective]+ " as the objective\n"+"Begin time :" + strftime("%Y-%m-%d %H:%M:%S"))
-    timeout = time.time()
-    basetest(predict)
-    writefile("Naive_Where Running Time: " + str(time.time()-timeout))
-  #CART
     # timeout = time.time()
+    # basetest(predict)
+    # writefile("Naive_Where Running Time: " + str(time.time()-timeout))
+    # timeout = time.time()
+    # tunetest(tune_predict)
+    # writefile("Tuned_Where Running Time: " + str(time.time()-timeout))
+  #CART
+    timeout = time.time()
     # The.data.predict = tune_predict # chage the tune predict set for cart tuning
-    # cart_tunetest(predict)
-    # writefile("Tuned_Cart Running Time: " + str(time.time()-timeout))
+    cart_predicttest(predict,"Tuned_Cart")
+    writefile("Tuned_Cart Running Time: " + str(time.time()-timeout))
     # timeout = time.time()
     # cart_basetest(predict)
     # writefile("Naive_Cart Running Time: " + str(time.time()-timeout))

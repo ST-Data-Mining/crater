@@ -94,7 +94,7 @@ def cart_de():
       assign(i)
       scores[n] = cart()[-1] # score[i]= [pd,pf,prec, g], the second objecit in returned value
       # scores[n] = cart()[0] # pd
-    # print scores
+    print scores
     return scores
 
   def best(scores):

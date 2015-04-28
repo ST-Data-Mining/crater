@@ -36,6 +36,9 @@ def csv2py(f):
 def _Abcd(predicted, actual):
   predicted_txt = []
   abcd = Abcd(db='Traing', rx='Testing')
+  if The.option.actualpredicted != "":
+    f = open("/Users/WeiFu/Google Drive/"+The.option.actualpredicted,'w').close()
+    f = open("/Users/WeiFu/Google Drive/"+The.option.actualpredicted, 'a')
   global The
   def isDef(x):
     return "Defective" if x >= The.option.threshold else "Non-Defective" # use the.option.threshold for cart, rf and where!!
@@ -43,6 +46,10 @@ def _Abcd(predicted, actual):
     predicted_txt +=[isDef(data)]
   for act, pre in zip(actual, predicted_txt):
     abcd.tell(act, pre)
+    real = "1" if act == "Defective" else "0"
+    pred = "1" if pre == "Defective" else "0"
+    if The.option.actualpredicted != "":
+      f.write(real+","+pred+"\n")
   abcd.header()
   score = abcd.ask()
   # pdb.set_trace()
@@ -50,23 +57,24 @@ def _Abcd(predicted, actual):
 
 def conv(x):
   return [ float(i) for i in x]
+
 def cart():
   clf = None
   # print (The.classifier.carttuned, The.classifier.cart, The.classifier.rf, The.classifier.rftuned)
-  if The.classifier.carttuned:
+  # if The.classifier.carttuned:
     # classifier = DecisionTreeClassifier
     # clf = classifier(criterion = The.cart.criterion, random_state = 0)
-    clf = DecisionTreeRegressor(
+  clf = DecisionTreeRegressor(
         max_features = The.cart.max_features, max_depth = The.cart.max_depth,
         min_samples_split = The.cart.min_samples_split, min_samples_leaf = The.cart.min_samples_leaf, random_state = 1)
-  elif The.classifier.cart :
-    clf = DecisionTreeRegressor(random_state = 1)
-  elif The.classifier.rf:
-    clf = RandomForestRegressor(n_estimators =100, random_state = 1)
-  elif The.classifier.rftuned:
-    clf = RandomForestRegressor(n_estimators =The.rf.n_estimators,max_features = The.rf.max_features,
-                            min_samples_split = The.rf.min_samples_split, min_samples_leaf = The.rf.min_samples_leaf,
-                            max_leaf_nodes = The.rf.max_leaf_nodes,random_state = 1)
+  # elif The.classifier.cart :
+  #   clf = DecisionTreeRegressor(random_state = 1)
+  # elif The.classifier.rf:
+  #   clf = RandomForestRegressor(n_estimators =100, random_state = 1)
+  # elif The.classifier.rftuned:
+  #   clf = RandomForestRegressor(n_estimators =The.rf.n_estimators,max_features = The.rf.max_features,
+  #                           min_samples_split = The.rf.min_samples_split, min_samples_leaf = The.rf.min_samples_leaf,
+  #                           max_leaf_nodes = The.rf.max_leaf_nodes,random_state = 1)
 
   # The.data.train =["./data/ant/ant-1.4.csv"]
   # The.data.predict ="./data/ant/ant-1.5.csv"
