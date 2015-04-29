@@ -21,7 +21,7 @@ def builder(fname=config.TRAIN_FILE, test_files=None):
   models["nn"] = nn.builder(fname, hiddens=250)
   models["greedy"] = klazzifiers.greedy(fname)
   models["boost"] = klazzifiers.booster(fname)
-  models["transfer"] = klazzifiers.booster(fname, test_files)
+  models["transfer"] = klazzifiers.transfer(fname, test_files)
   return models
 
 def predictor(models, points):
@@ -32,7 +32,7 @@ def predictor(models, points):
   results.append(predicts)
   results.append(nn.predictor(models["nn"], points)[0])
   results.append([models["greedy"].predict(point.x) for point in points])
-  results.append([models["booster"].predict(point.x) for point in points])
+  results.append([models["boost"].predict(point.x) for point in points])
   results.append([models["transfer"].predict(point.x) for point in points])
   for i in range(len(results[0])):
     ones, zeros = 0,0
@@ -50,9 +50,9 @@ def predictor(models, points):
   return consolidated, actuals
 
 def _runner():
-  test_files=['3_24.csv','3_25.csv']
+  test_files=['all.csv']
   points = parseCSV(config.FEATURES_FOLDER+test_files[0], False)
-  points += parseCSV(config.FEATURES_FOLDER+test_files[1], False)
+  #points += parseCSV(config.FEATURES_FOLDER+test_files[1], False)
   classifier = builder(config.TRAIN_FILE, test_files)
   predicted, actual = predictor(classifier, points)
   stat = ABCD()
