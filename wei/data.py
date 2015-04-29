@@ -44,25 +44,85 @@ def read(files):
       map(lambda x:x.weights(Y,N),rows)
   return rows
 
-def changeHeader(f = "./data/features"):
+def changeHeader(f = "./data/treat"):
   all_files = [ (join(f,path)) for path in listdir(f) if isfile(join(f,path))]
   for one in all_files:
-    content = None
-    with open(one,"r") as f:
-      pdb.set_trace()
-      content = f.readlines()
-      header = content[0].split(",")
-      newheader = []
-      for item in header[:-1]:
-        newheader +=["$"+item]
-      newheader += ["<"+header[-1]]
-      content[0] = ",".join(newheader)
+    train = ""
+    tune = ""
+    f = open(one,"r")
+    count = 0
+    while True:
+      line = f.readline()
+      if not line:
+        break
+      else:
+        # pdb.set_trace()
+        if count == 0:
+          header = line.split(",")
+          newheader = header[:]
+          if "$" not in header[0]:
+            for item in header[:-1]:
+              newheader +=["$"+item]
+            newheader +=["$<"+header[-1]]
+          else:
+            train += ",".join(newheader)
+            tune +=",".join(newheader)
+        if count %2 == 0:
+          train +=",".join(line.split(","))
+        else:
+          tune +=",".join(line.split(","))
+      # pdb.set_trace()
+      count +=1
 
-    for row in content:
-      with open(one+".csv","a") as f:
-        f.write(row)
+    f = open(one+"train.csv","w")
+    f.write(train)
+    f.close()
+    f = open(one+"tune.csv","w")
+    f.write(tune)
+    f.close()
+      # print (content)
+
+
+
+
+
+
+
+
+
+    #
+    #
+    # content = f.readlines()
+    # header = content[0].split(",")
+    # newheader = []
+    # for item in header[:-1]:
+    #   if "$" in item:
+    #     newheader +=[item]
+    #   else:
+    #     newheader +=["$"+item]
+    # newheader += ["$<"+header[-1]]
+    # content[0] = ",".join(newheader)
+    # # pdb.set_trace()
+    #
+    # for row in content:
+    #   with open(one+".csv","a") as f:
+    #     f.write(row)
     # pdb.set_trace()
 
+# def addn(f = "./data/treat"):
+#   all_files = [ (join(f,path)) for path in listdir(f) if isfile(join(f,path))]
+#   for one in all_files:
+#     content = []
+#     with open(one,"r") as f:
+#       # pdb.set_trace()
+#       content = f.readlines()
+#       for j in content:
+#       content[0]+=[j+"\n"]
+#
+#
+#     for row in content:
+#       with open(one+".csv","a") as f:
+#         f.write(row)
 
 
 
@@ -70,4 +130,5 @@ def changeHeader(f = "./data/features"):
 
 
 if __name__ == "__main__":
-    changeHeader()
+  changeHeader()
+  # addn()
